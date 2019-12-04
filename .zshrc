@@ -17,20 +17,17 @@ alias grieg="ssh -t z5015906@login.cse.unsw.edu.au ssh grieg"
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
-alias pdf=okular
-alias ff=firefox
-alias emulator='~/Library/Android/sdk/emulator/emulator -avd Pixel_XL_API_29'
 alias cat='bat'
 alias gd='git diff'
 alias gs='git status'
 alias ga='git add'
 alias gl='git log'
 
-# cheat sheet 
-# https://github.com/chubin/cheat.sh#usage
-function cheat(){
-    curl cheat.sh/$1
-}
+# Console services
+# https://github.com/chubin/awesome-console-services#Text-Sharing
+function cheat(){ curl cheat.sh/$1 }
+function weather() { curl wttr.in/$1 }
+function ip() { curl l2.io/ip }
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
@@ -52,6 +49,8 @@ plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 # autosuggestions config
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=3'
 source $ZSH/oh-my-zsh.sh
+
+# vim bindings
 set -o vi
 
 
