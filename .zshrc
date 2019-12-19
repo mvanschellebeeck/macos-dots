@@ -1,5 +1,5 @@
 export ZSH="/Users/matt/.oh-my-zsh"
-export PATH="/Users/matt/miniconda/bin:$PATH"
+
 HISTFILE=~/.histfile
 HISTSIZE=
 HISTFILESIZE= #infinite file history
@@ -22,6 +22,11 @@ alias gd='git diff'
 alias gs='git status'
 alias ga='git add'
 alias gl='git log'
+alias gc='git commit'
+alias gp='git push'
+alias define='dict'
+alias c='clear'
+alias ta='tmux attach -t'
 
 # Console services
 # https://github.com/chubin/awesome-console-services#Text-Sharing
@@ -48,11 +53,9 @@ plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 # autosuggestions config
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=3'
-source $ZSH/oh-my-zsh.sh
 
 # vim bindings
 set -o vi
 
-
+source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-

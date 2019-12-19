@@ -1,0 +1,6 @@
+[user]
+	name = Matthew Van Schellebeeck
+	email = mvanschellebeeck@gmail.com
+[core]
+	editor = nvim
+	excludesfile = /Users/matt/.global_gitignore

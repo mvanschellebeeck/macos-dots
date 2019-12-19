@@ -1,3 +1,4 @@
+let mapleader=" "
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -24,13 +25,11 @@ set smartcase
 set hlsearch
 set incsearch
 
+" Tabs
+set showtabline=2
+
 " Regular expressions
 set magic
-
-" Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
 
 " Set 1 tab to 2 spaces
 set tabstop=2
@@ -50,14 +49,11 @@ set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
 
 " Theme
-set background=dark
+"set background=dark
 "colorscheme solarized 
 
 " Syntax highlighting
 syntax enable
-
-" Ctrl+h to stop searching
-" nnoremap jk :noh<return><esc>
 
 " Automatically reload .vimrc on update
 augroup myvimrchooks
@@ -96,46 +92,8 @@ endif
 let g:indentguides_tabchar = '|'
 let g:indentguides_spacechar = '|'
 
-" Vim history (git)
-augroup custom_backup
-  autocmd!
-  autocmd BufWritePost * call BackupCurrentFile()
-augroup end
-
-let s:custom_backup_dir='~/.vim_custom_backups'
-function! BackupCurrentFile()
-  if !isdirectory(expand(s:custom_backup_dir))
-    let cmd = 'mkdir -p ' . s:custom_backup_dir . ';'
-    let cmd .= 'cd ' . s:custom_backup_dir . ';'
-    let cmd .= 'git init;'
-    call system(cmd)
-  endif
-  let file = expand('%:p')
-  if file =~ fnamemodify(s:custom_backup_dir, ':t') | return | endif
-  let file_dir = s:custom_backup_dir . expand('%:p:h')
-  let backup_file = s:custom_backup_dir . file
-  let cmd = ''
-  if !isdirectory(expand(file_dir))
-    let cmd .= 'mkdir -p ' . file_dir . ';'
-  endif
-  let cmd .= 'cp ' . file . ' ' . backup_file . ';'
-  let cmd .= 'cd ' . s:custom_backup_dir . ';'
-  let cmd .= 'git add ' . backup_file . ';'
-  let cmd .= 'git commit -m "Backup - `date`";'
-  call jobstart(cmd)
-endfunction
-
-noremap <silent> <leader>obk :call BackupHistory()<cr>
-
-function! BackupHistory()
-  let backup_dir = expand(s:custom_backup_dir . expand('%:p:h'))
-  let cmd = 'tmux split-window -h -c "' . backup_dir . '"\; '
-  let cmd .= 'send-keys "git log --patch --since=\"1 month ago\" ' . expand('%:t') . '" C-m'
-  call system(cmd)
-endfunction
-
-nmap <F2> <Plug>(coc-rename)
-" My mappings
+" lightline
+nmap <leader>rn <Plug>(coc-rename)
 
 " word to uppercase
 nnoremap <c-u> viwU
@@ -177,8 +135,65 @@ nnoremap <C-H> <C-W><C-H>
 " autoindent python files pls
 ":autocmd BufWritePre,BufRead *.py :normal gg=G
 
-nnoremap <D-c> "+y
-vnoremap <D-c> "+y
+nnoremap <leader>c "+y
+vnoremap <leader>c "+y
 
 " git gutter
 let g:gitgutter_git_executable = '/usr/bin/git'
+
+" rust tooling
+let g:rustfmt_autosave = 1
+
+" lightline
+set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'absolutepath', 'modified' ] ],
+      \ }
+      \ }
+
+" set noshowmode
+if !has('gui_running')
+  set t_Co=256
+endif
+
+" intellisensce (coc.nvim)
+highlight Pmenu ctermbg=white guibg=white
+set updatetime=300
+set shortmess+=c
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter' 
+Plug 'thaerkh/vim-indentguides'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'elzr/vim-json'
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'ap/vim-css-color'
+Plug 'sheerun/vim-polyglot'
+Plug 'junegunn/goyo.vim'
+Plug 'vim-scripts/c.vim'
+Plug 'rust-lang/rust.vim'
+Plug 'itchyny/lightline.vim'
+
+call plug#end()

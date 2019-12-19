@@ -1,0 +1,10 @@
+*.class
+.settings
+.project
+.vim/
+*.pyc
+*.o
+*.swp
+__pycache__
+.vscode/
+.DS_Store
